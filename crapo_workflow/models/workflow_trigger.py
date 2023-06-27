@@ -58,7 +58,6 @@ class WorkflowTrigger(models.Model):
     init_record_key = fields.Char()
 
     @job
-    @api.multi
     def check_and_run(self, wf_context_id):
         """
         Evaluate event_logical_condition in the context passer in parameter
@@ -210,7 +209,6 @@ class WorkflowTrigger(models.Model):
 
         return rec
 
-    @api.multi
     def write(self, values):
         """
         Check conditions before writing record

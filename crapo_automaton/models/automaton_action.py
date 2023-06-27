@@ -37,7 +37,6 @@ class CrapoAutomatonAction(models.Model):
         """
         self.action_server_id.run()
 
-    @api.multi
     @job
     def run_async(self):
         """

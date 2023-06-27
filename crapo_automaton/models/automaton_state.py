@@ -107,7 +107,6 @@ class CrapoAutomatonState(models.Model):
 
         return rec
 
-    @api.multi
     def write(self, values):
         """
         Override default method to prevent multi default state

@@ -16,7 +16,7 @@ class CrapoAutomatonTransition(models.Model):
     @api.constrains("postconditions", "async_action")
     def async_action_post_conditions_conflict(self):
         """
-            Checks that no post-condition is set when using an async action
+        Checks that no post-condition is set when using an async action
         """
         for rec in self:
             if rec.async_action and rec.postconditions:
@@ -35,11 +35,15 @@ class CrapoAutomatonTransition(models.Model):
     model_id = fields.Many2one("ir.model", related="automaton_id.model_id")
 
     from_state_id = fields.Many2one(
-        "crapo.automaton.state", ondelete="cascade", required=True,
+        "crapo.automaton.state",
+        ondelete="cascade",
+        required=True,
     )
 
     to_state_id = fields.Many2one(
-        "crapo.automaton.state", ondelete="cascade", required=True,
+        "crapo.automaton.state",
+        ondelete="cascade",
+        required=True,
     )
 
     precondition_ids = fields.One2many(
@@ -70,7 +74,8 @@ class CrapoAutomatonTransition(models.Model):
     )
 
     action_id = fields.Many2one(
-        "crapo.automaton.action", string="Action to be executed",
+        "crapo.automaton.action",
+        string="Action to be executed",
     )
 
     async_action = fields.Boolean(
@@ -93,16 +98,15 @@ change or during the write process (computed fields) """,
     @api.model
     def create(self, values):
         """
-           Override to prevent save postcondtions on async_action
+        Override to prevent save postcondtions on async_action
         """
         if values.get("async_action"):
             values["postcondition_ids"] = False
         return super(CrapoAutomatonTransition, self).create(values)
 
-    @api.multi
     def write(self, values):
         """
-            Override to prevent save postcondtions on async_action
+        Override to prevent save postcondtions on async_action
         """
         if values.get("async_action"):
             values["postcondition_ids"] = False

@@ -174,7 +174,6 @@ class CrapoAutomatonMixin(ReadonlyViewMixin, models.AbstractModel):
                 )
         return rec
 
-    @api.multi
     def write(self, values):
         """
         Override write method in order to preventing transitioning

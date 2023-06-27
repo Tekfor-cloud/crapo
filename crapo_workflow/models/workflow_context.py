@@ -179,7 +179,6 @@ class WorkflowContextEvent(models.Model):
             rec.record_id = rec.event_id.activity_id.id
         return rec
 
-    @api.multi
     def write(self, values):
         """
         Override default write to add relative context for event
