@@ -24,7 +24,6 @@ class WorkflowDiagramNode(models.Model):
     )
     to_arrow_ids = fields.One2many("crapo.workflow.diagram.arrow", "to_node")
 
-    @api.model_cr
     def init(self):
         """
         Actions to be taken on module installation
@@ -77,7 +76,6 @@ class WorkflowDiagramArrow(models.Model):
 
     to_node = fields.Many2one("crapo.workflow.diagram.node")
 
-    @api.model_cr
     def init(self):
         """
         actions to take when creating tables on module initialization or
