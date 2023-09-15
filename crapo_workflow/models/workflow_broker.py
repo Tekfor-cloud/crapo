@@ -2,25 +2,27 @@
 see README for details
 """
 from odoo import models, api
+from odoo.addons.queue_job.job import job
 from odoo.tools.safe_eval import safe_eval
 
 
 class WorkflowBroker(models.TransientModel):
     """
-    The broker will receive all the event notification
-    and evaluate them
+        The broker will receive all the event notification
+        and evaluate them
     """
 
     _name = "crapo.workflow.broker"
 
+    @job
     @api.model
     def notify(self, event_type, values):
         """
-        Call by method wf_event from base model to receive and
-        evaluate event.
+            Call by method wf_event from base model to receive and
+            evaluate event.
 
-        * values must content a key 'record' that contain the record
-        that throws the event
+            * values must content a key 'record' that contain the record
+            that throws the event
         """
         # Record asssociate with this event
         record = values["record"]
@@ -51,10 +53,7 @@ class WorkflowBroker(models.TransientModel):
             # is met then create a new workflow context
             if rec_event.trigger_id.trigger_type == "init" and (
                 not rec_event.condition
-                or safe_eval(
-                    rec_event.condition,
-                    context,
-                )
+                or safe_eval(rec_event.condition, context,)
             ):
                 new_ctx = self.env["crapo.workflow.context"].create(
                     {
@@ -71,6 +70,7 @@ class WorkflowBroker(models.TransientModel):
                 done_ctx_event = done_ctx_event | new_ctx.context_event_ids[0]
 
             else:
+
                 # If event has event_context and record_id are matching and
                 # condition is met the event_context are set to done
                 for rec_ctx_event in rec_event.context_event_ids:
@@ -81,10 +81,7 @@ class WorkflowBroker(models.TransientModel):
                         or rec_ctx_event.get_record_id() == record.id
                     ) and (
                         not rec_event.condition
-                        or safe_eval(
-                            rec_event.condition,
-                            context,
-                        )
+                        or safe_eval(rec_event.condition, context,)
                     ):
                         done_ctx_event = done_ctx_event | rec_ctx_event
 
