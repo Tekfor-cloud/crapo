@@ -15,6 +15,7 @@
         "security/automaton_transition.xml",
         "security/automaton_condition.xml",
         "security/automaton_state.xml",
+        "data/job.xml",
     ],
     "installable": True,
     "images": [],

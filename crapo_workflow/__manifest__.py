@@ -16,6 +16,7 @@
         "security/workflow_context.xml",
         "security/workflow_context_event.xml",
         "security/workflow_broker.xml",
+        "data/job.xml",
     ],
     "installable": True,
     "images": [],

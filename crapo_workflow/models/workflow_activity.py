@@ -78,7 +78,6 @@ class WorkflowActivity(models.Model):
 
     active_record_context_key = fields.Char()
 
-    @job
     def run(self, wf_context_id, wf_trigger_id):
         """
         Runs the server action, possibly in async and add some values

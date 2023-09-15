@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="job_function_run"
+        model="queue.job.function">
+        <field name="model_id"
+            ref="crapo_automation.model_crapo_workflow_activity" />
+        <field name="method">run</field>
+    </record>
+    <record id="job_function_notify"
+        model="queue.job.function">
+        <field name="model_id"
+            ref="crapo_automation.model_crapo_workflow_broker" />
+        <field name="method">notify</field>
+    </record>
+    <record id="job_function_check_and_run"
+        model="queue.job.function">
+        <field name="model_id"
+            ref="crapo_automation.model_crapo_workflow_trigger" />
+        <field name="method">check_and_run</field>
+    </record>
+</odoo>

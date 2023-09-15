@@ -37,7 +37,6 @@ class CrapoAutomatonAction(models.Model):
         """
         self.action_server_id.run()
 
-    @job
     def run_async(self):
         """
         run action asynchronously
