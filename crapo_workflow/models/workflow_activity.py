@@ -3,7 +3,6 @@ see README for details
 """
 import logging
 from odoo import models, fields, api
-from odoo.addons.queue_job.job import job
 
 
 class IrActionsServer(models.Model):
@@ -78,7 +77,6 @@ class WorkflowActivity(models.Model):
 
     active_record_context_key = fields.Char()
 
-    @job
     def run(self, wf_context_id, wf_trigger_id):
         """
         Runs the server action, possibly in async and add some values

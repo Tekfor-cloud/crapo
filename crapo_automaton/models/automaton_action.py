@@ -2,7 +2,6 @@
 See README for details
 """
 from odoo import models, api, fields
-from odoo.addons.queue_job.job import job
 
 
 class IrActionsServer(models.Model):
@@ -37,7 +36,6 @@ class CrapoAutomatonAction(models.Model):
         """
         self.action_server_id.run()
 
-    @job
     def run_async(self):
         """
         run action asynchronously

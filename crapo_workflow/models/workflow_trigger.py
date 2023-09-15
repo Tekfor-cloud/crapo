@@ -7,8 +7,6 @@ from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
-from odoo.addons.queue_job.job import job
-
 
 class WorkflowTrigger(models.Model):
     """
@@ -57,7 +55,6 @@ class WorkflowTrigger(models.Model):
 
     init_record_key = fields.Char()
 
-    @job
     def check_and_run(self, wf_context_id):
         """
         Evaluate event_logical_condition in the context passer in parameter
