@@ -3,7 +3,6 @@ see README for details
 """
 import logging
 from odoo import models, fields, api
-from odoo.addons.queue_job.job import job
 
 
 class IrActionsServer(models.Model):

@@ -2,7 +2,6 @@
 See README for details
 """
 from odoo import models, api, fields
-from odoo.addons.queue_job.job import job
 
 
 class IrActionsServer(models.Model):
