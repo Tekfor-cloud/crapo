@@ -6,7 +6,7 @@ from odoo import models, fields, api
 
 class WorkflowEvent(models.Model):
     """
-        Event definition
+    Event definition
     """
 
     _name = "crapo.workflow.event"
@@ -23,7 +23,7 @@ class WorkflowEvent(models.Model):
 
     trigger_id = fields.Many2one("crapo.workflow.trigger")
 
-    model_id = fields.Many2one("ir.model", required=True)
+    model_id = fields.Many2one("ir.model", required=True, ondelete="cascade")
 
     context_event_ids = fields.One2many(
         "crapo.workflow.context.event", "event_id"
@@ -54,7 +54,7 @@ class WorkflowEvent(models.Model):
     @api.model
     def create(self, values):
         """
-            Automaticaly add a default name if not defined
+        Automaticaly add a default name if not defined
         """
         rec = super(WorkflowEvent, self).create(values)
 
