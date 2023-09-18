@@ -30,7 +30,8 @@ class IrActionsServer(models.Model):
 # To return an action, assign: action = {...}\n\n\n\n"""
 
     usage = fields.Selection(
-        selection_add=[("crapo_workflow_activity", "Crapo workflow activity")]
+        selection_add=[("crapo_workflow_activity", "Crapo workflow activity")],
+        ondelete={"crapo_workflow_activity": "set default"},
     )
 
     code = fields.Text(default=DEFAULT_PYTHON_CODE)

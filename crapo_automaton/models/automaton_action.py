@@ -12,7 +12,8 @@ class IrActionsServer(models.Model):
     _inherit = "ir.actions.server"
 
     usage = fields.Selection(
-        selection_add=[("crapo_automaton_action", "Crapo automaton action")]
+        selection_add=[("crapo_automaton_action", "Crapo automaton action")],
+        ondelete={"crapo_automaton_action": "set default"},
     )
 
 
