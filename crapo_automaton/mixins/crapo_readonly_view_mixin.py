@@ -5,14 +5,17 @@ See README for details
 from lxml import etree
 from lxml.builder import E  # pylint: disable=no-name-in-module
 
+from odoo import models
 from odoo.tools.safe_eval import safe_eval
 from odoo.osv import expression
 
 
-class ReadonlyViewMixin:
+class ReadonlyViewMixin(models.AbstractModel):
     """
     Mixin class that can be used to set a whole view readonly with domains
     """
+
+    _name = "crapo.readonly.view.mixin"
 
     _readonly_domain = []
     _readonly_fields_to_add = []

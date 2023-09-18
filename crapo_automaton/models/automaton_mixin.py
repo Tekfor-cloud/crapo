@@ -7,10 +7,8 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 from odoo import SUPERUSER_ID
 
-from ..mixins.crapo_readonly_view_mixin import ReadonlyViewMixin
 
-
-class CrapoAutomatonMixin(ReadonlyViewMixin, models.AbstractModel):
+class CrapoAutomatonMixin(models.AbstractModel):
     """
     Mixin class that can be used to define an Odoo Model eligible
     to be managed by a Crapo Automaton
@@ -19,6 +17,7 @@ class CrapoAutomatonMixin(ReadonlyViewMixin, models.AbstractModel):
     """
 
     _name = "crapo.automaton.mixin"
+    _inherit = "crapo.readonly.view.mixin"
 
     _description = "Crapo automaton mixin"
 
@@ -141,7 +140,6 @@ class CrapoAutomatonMixin(ReadonlyViewMixin, models.AbstractModel):
 
         automaton = rec.crapo_automaton_id
         if automaton:
-
             # Sync crapo state with sync_state_field if needed
             if automaton.sync_state_field:
                 rec.with_context(
