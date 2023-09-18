@@ -1,4 +1,3 @@
-
 """
 See README for details
 """
@@ -36,13 +35,18 @@ class Automaton(models.Model):
         string="Model",
         help="""Model for which this automaton is relevant""",
         required=True,
+        ondelete="cascade",
     )
 
     transition_ids = fields.One2many(
-        "crapo.automaton.transition", "automaton_id",
+        "crapo.automaton.transition",
+        "automaton_id",
     )
 
-    state_ids = fields.One2many("crapo.automaton.state", "automaton_id",)
+    state_ids = fields.One2many(
+        "crapo.automaton.state",
+        "automaton_id",
+    )
 
     default_state_id = fields.Many2one(
         "crapo.automaton.state", compute="_compute_default_state"
@@ -68,7 +72,7 @@ class Automaton(models.Model):
     @api.model
     def create(self, values):
         """
-            Write automaton_id on automaton.model_id existing records
+        Write automaton_id on automaton.model_id existing records
         """
         rec = super(Automaton, self).create(values)
 
