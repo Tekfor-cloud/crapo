@@ -3,7 +3,7 @@
     <record id="job_function_run_async"
         model="queue.job.function">
         <field name="model_id"
-            ref="crapo_automation.model_crapo_automaton_action" />
+            ref="model_crapo_automaton_action" />
         <field name="method">run_async</field>
     </record>
 </odoo>
