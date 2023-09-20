@@ -50,7 +50,6 @@ class IrActionsServer(models.Model):
         ):
             eval_context.update(
                 {
-                    "logging": logging,
                     "wf_context": self.env.context["wf_context_id"],
                     "wf_trigger": self.env.context["wf_trigger_id"],
                 }
