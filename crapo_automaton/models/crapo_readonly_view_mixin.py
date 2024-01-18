@@ -20,6 +20,13 @@ class ReadonlyViewMixin(models.AbstractModel):
     _readonly_domain = []
     _readonly_fields_to_add = []
 
+    def _valid_field_parameter(self, field, name):
+        # I can't even
+        return (
+            name == "skip_readonly_domain"
+            or super()._valid_field_parameter(field, name)
+        )
+
     def _fields_view_get(
         self, view_id=None, view_type="form", toolbar=False, submenu=False
     ):
