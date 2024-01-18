@@ -53,7 +53,6 @@ class CrapoAutomatonMixin(models.AbstractModel):
         ],
         group_expand="_read_group_crapo_states",
         copy=False,
-        tracking=True,
     )
 
     crapo_readonly_fields = fields.Char(
