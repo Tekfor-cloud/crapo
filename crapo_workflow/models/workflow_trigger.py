@@ -8,7 +8,6 @@ from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
 
 
-
 class WorkflowTrigger(models.Model):
     """
     A trigger is the logical brick between activities. It will trigger all
@@ -22,6 +21,7 @@ class WorkflowTrigger(models.Model):
     """
 
     _name = "crapo.workflow.trigger"
+    _description = "Crapo Workflow Trigger"
 
     name = fields.Char(required=True)
 

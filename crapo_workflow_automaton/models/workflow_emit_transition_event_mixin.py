@@ -12,6 +12,7 @@ class CrapoWorkflowAutomatonMixin(models.AbstractModel):
 
     _name = "crapo.workflow.automaton.mixin"
     _inherit = "crapo.automaton.mixin"
+    _description = "Crapo Workflow Automaton Mixin"
 
     def write(self, values):
         """

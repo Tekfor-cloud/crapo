@@ -12,6 +12,7 @@ class WorkflowBroker(models.TransientModel):
     """
 
     _name = "crapo.workflow.broker"
+    _description = "Crapo Workflow Broker"
 
     @api.model
     def notify(self, event_type, values):

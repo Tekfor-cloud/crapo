@@ -16,6 +16,7 @@ class ReadonlyViewMixin(models.AbstractModel):
     """
 
     _name = "crapo.readonly.view.mixin"
+    _description = "Crapo Readonly View Mixin"
 
     _readonly_domain = []
     _readonly_fields_to_add = []

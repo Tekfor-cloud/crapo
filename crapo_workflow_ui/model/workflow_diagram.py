@@ -11,6 +11,7 @@ class WorkflowDiagramNode(models.Model):
     """
 
     _name = "crapo.workflow.diagram.node"
+    _description = "Crapo Workflow Diagram Node"
     _auto = False
 
     id = fields.Integer()
@@ -66,6 +67,7 @@ class WorkflowDiagramArrow(models.Model):
     """
 
     _name = "crapo.workflow.diagram.arrow"
+    _description = "Crapo Workflow Diagram Arrow"
     _auto = False
 
     id = fields.Integer()

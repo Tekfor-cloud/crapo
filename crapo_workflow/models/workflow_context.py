@@ -11,6 +11,7 @@ class WorkflowContext(models.Model):
     """
 
     _name = "crapo.workflow.context"
+    _description = "Crapo Workflow Context"
 
     workflow_id = fields.Many2one("crapo.workflow", ondelete="cascade")
 
@@ -69,6 +70,7 @@ class WorkflowContextEntry(models.Model):
     """
 
     _name = "crapo.workflow.context.entry"
+    _description = "Crapo Workflow Context Entry"
 
     _sql_constraints = [
         (
@@ -118,6 +120,7 @@ class WorkflowContextEvent(models.Model):
     """
 
     _name = "crapo.workflow.context.event"
+    _description = "Crapo Workflow Context Event"
 
     wf_context_id = fields.Many2one(
         "crapo.workflow.context", required=True, ondelete="cascade"

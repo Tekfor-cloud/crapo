@@ -13,6 +13,7 @@ class WorkflowListener(Component):
 
     _name = "crapo.workflow.listener"
     _inherit = "base.event.listener"
+    _description = "Crapo Workflow Listener"
 
     def wf_event(self, name, values):
         """

@@ -10,6 +10,7 @@ class WorkflowEvent(models.Model):
     """
 
     _name = "crapo.workflow.event"
+    _description = "Crapo Workflow Event"
 
     _sql_constraints = [
         (

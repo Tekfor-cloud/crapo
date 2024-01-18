@@ -24,6 +24,7 @@ class CrapoAutomatonAction(models.Model):
     """
 
     _name = "crapo.automaton.action"
+    _description = "Crapo Automaton Action"
     _inherits = {"ir.actions.server": "action_server_id"}
     _description = "A specialization of server actions for Crapo Automata"
 

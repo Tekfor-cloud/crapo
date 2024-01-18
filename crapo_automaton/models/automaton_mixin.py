@@ -17,6 +17,7 @@ class CrapoAutomatonMixin(models.AbstractModel):
     """
 
     _name = "crapo.automaton.mixin"
+    _description = "Crapo Automaton Mixin"
     _inherit = "crapo.readonly.view.mixin"
 
     _description = "Crapo automaton mixin"
