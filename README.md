@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/badge/licence-LGPL--3-blue.svg)](http://www.gnu.org/licenses/lgpl-3.0-standalone.html)
-[![Build Status](https://travis-ci.com/article714/crapo.svg?branch=15.0)](https://travis-ci.com/article714/crapo)
+[![Build Status](https://travis-ci.com/article714/crapo.svg?branch=16.0)](https://travis-ci.com/article714/crapo)
 
 # CrAPO: Workflow engine for Odoo
 
