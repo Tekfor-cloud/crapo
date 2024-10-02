@@ -100,9 +100,7 @@ class WorkflowTrigger(models.Model):
         ):
             rec.unlink()
 
-        if self.search([("from_activity_ids", "=", activity_id.id)]):
-            wf_context_id.write({"context_event_ids": [(5, 0, 0)]})
-
+        wf_context_id.write({"context_event_ids": [(5, 0, 0)]})
         for rec in self.search([("from_activity_ids", "=", activity_id.id)]):
             wf_context_id.write(
                 {
