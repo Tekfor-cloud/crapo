@@ -1,6 +1,7 @@
 """
 see README for details
 """
+
 import re
 
 from odoo import models, fields, api, _
@@ -98,6 +99,9 @@ class WorkflowTrigger(models.Model):
             lambda rec: rec.trigger_id == self
         ):
             rec.unlink()
+
+        if self.search([("from_activity_ids", "=", activity_id.id)]):
+            wf_context_id.write({"context_event_ids": [(5, 0, 0)]})
 
         for rec in self.search([("from_activity_ids", "=", activity_id.id)]):
             wf_context_id.write(
