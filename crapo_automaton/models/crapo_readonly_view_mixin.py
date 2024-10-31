@@ -28,16 +28,8 @@ class ReadonlyViewMixin(models.AbstractModel):
             or super()._valid_field_parameter(field, name)
         )
 
-    def _fields_view_get(
-        self, view_id=None, view_type="form", toolbar=False, submenu=False
-    ):
-        """
-        Override to add crapo_readonly_fields to arch and attrs readonly
-        on fields that could be editable
-        """
-        result = super(ReadonlyViewMixin, self)._fields_view_get(
-            view_id, view_type, toolbar, submenu
-        )
+    def _get_view(self, view_id=None, view_type="form", **options):
+        arch, view = super()._get_view(view_id, view_type, **options)
         if view_type in ("form", "tree"):
             skip_fields = [
                 name
@@ -49,24 +41,16 @@ class ReadonlyViewMixin(models.AbstractModel):
                 or field.readonly
             ]
 
-            node = etree.fromstring(  # pylint: disable=c-extension-no-member
-                result["arch"]
-            )
             for field in self._readonly_fields_to_add:
-                node.append(E.field(name=field, invisible="1"))
+                arch.append(E.field(name=field, invisible="1"))
 
             if not isinstance(self._readonly_domain, (list, tuple)):
                 lst_domain = [self._readonly_domain]
             else:
                 lst_domain = self._readonly_domain
 
-            self._process_field(node, skip_fields, lst_domain)
-            result[
-                "arch"
-            ] = etree.tostring(  # pylint: disable=c-extension-no-member
-                node
-            )
-        return result
+            self._process_field(arch, skip_fields, lst_domain)
+        return arch, view
 
     def _process_field(self, node, skip_fields, lst_domain):
         """
