@@ -36,7 +36,7 @@ class Base(models.AbstractModel):
                 values = {}
             values["record"] = rec
             broker = self.copy_context(rec, broker)
-            broker.with_ay().notify(name, values)
+            broker.with_delay().notify(name, values)
 
     def copy_context(self, from_model, to_model):
         for key in from_model.env.context.keys():
