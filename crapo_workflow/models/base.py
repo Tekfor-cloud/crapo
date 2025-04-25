@@ -10,7 +10,7 @@ class Base(models.AbstractModel):
     The base model, which is implicitly inherited by all models.
 
     A new :meth:`wf_event` method is added on all Odoo Models, allowing to
-    notify an event to crapo_warkflow
+    notify an event to crapo_workflow
     """
 
     _inherit = "base"
