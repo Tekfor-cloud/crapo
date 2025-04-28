@@ -17,6 +17,11 @@
         "security/automaton_state.xml",
         "data/job.xml",
     ],
+    "assets": {
+        "web.assets_backend": [
+            "crapo_automaton/static/src/js/statusbar_field.js"
+        ],
+    },
     "installable": True,
     "images": [],
     "application": True,

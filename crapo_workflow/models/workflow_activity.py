@@ -1,6 +1,7 @@
 """
 see README for details
 """
+
 import logging
 from odoo import models, fields, api
 
@@ -95,9 +96,9 @@ class WorkflowActivity(models.Model):
                     rec.active_record_context_key
                 )
                 context["active_id"] = active_record.id
-                context[
-                    "active_model"
-                ] = active_record._name  # pylint: disable=protected-access
+                context["active_model"] = (
+                    active_record._name
+                )  # pylint: disable=protected-access
 
             res = rec.with_context(**context).action_server_id.run()
             rec.wf_event(

@@ -1,6 +1,7 @@
 """
 see README for details
 """
+
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
@@ -99,7 +100,7 @@ class WorkflowContextEntry(models.Model):
         if not self.model_id:
             raise UserError(_("This context is not linked to a model"))
 
-        return self.env[self.model_id.model].browse(
+        return self.env[self.model_id.sudo().model].browse(
             map(int, self.value.split(","))
         )
 
@@ -128,7 +129,9 @@ class WorkflowContextEvent(models.Model):
 
     done = fields.Boolean(default=False, required=True)
 
-    event_id = fields.Many2one("crapo.workflow.event", required=True)
+    event_id = fields.Many2one(
+        "crapo.workflow.event", required=True, ondelete="cascade"
+    )
 
     # Shortcut for convenience
     trigger_id = fields.Many2one(

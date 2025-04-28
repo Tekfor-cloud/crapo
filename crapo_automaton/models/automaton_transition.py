@@ -13,17 +13,6 @@ class CrapoAutomatonTransition(models.Model):
     _name = "crapo.automaton.transition"
     _description = "Transition between two states"
 
-    @api.constrains("postconditions", "async_action")
-    def async_action_post_conditions_conflict(self):
-        """
-        Checks that no post-condition is set when using an async action
-        """
-        for rec in self:
-            if rec.async_action and rec.postconditions:
-                raise exceptions.ValidationError(
-                    _("Transition can't have async action and postcontitions")
-                )
-
     name = fields.Char(help="Transition's name", required=True)
 
     description = fields.Text()
