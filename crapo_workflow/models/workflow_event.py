@@ -1,6 +1,7 @@
 """
 see README for details
 """
+
 from odoo import models, fields, api
 
 
@@ -30,7 +31,9 @@ class WorkflowEvent(models.Model):
         "crapo.workflow.context.event", "event_id"
     )
 
-    activity_id = fields.Many2one("crapo.workflow.activity")
+    activity_id = fields.Many2one(
+        "crapo.workflow.activity", ondelete="cascade"
+    )
 
     record_id_context_key = fields.Char()
 

@@ -129,7 +129,9 @@ class WorkflowContextEvent(models.Model):
 
     done = fields.Boolean(default=False, required=True)
 
-    event_id = fields.Many2one("crapo.workflow.event", required=True)
+    event_id = fields.Many2one(
+        "crapo.workflow.event", required=True, ondelete="cascade"
+    )
 
     # Shortcut for convenience
     trigger_id = fields.Many2one(
