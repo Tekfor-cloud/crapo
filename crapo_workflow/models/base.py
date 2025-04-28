@@ -2,6 +2,7 @@
 see README for details
 """
 
+import logging
 from odoo import models
 
 
@@ -35,7 +36,9 @@ class Base(models.AbstractModel):
             if values is None:
                 values = {}
             values["record"] = rec
+            logging.info("BEFORE is_superuser:%s", rec.env.is_superuser())
             broker = self.copy_context(rec, broker)
+            logging.info("AFTER is_superuser:%s", broker.env.is_superuser())
             broker.with_delay().notify(name, values)
 
     def copy_context(self, from_model, to_model):
