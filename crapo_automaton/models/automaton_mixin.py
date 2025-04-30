@@ -2,6 +2,7 @@
 See README for details
 """
 
+import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
@@ -110,6 +111,7 @@ class CrapoAutomatonMixin(models.AbstractModel):
         )
         # If no crapo sate is link to sync_state_field value
         if not sync_state:
+            logging.info("IN _crapo_get_sync_state")
             sync_rec = self.env[
                 self.env[automaton.model_id.model]
                 ._fields[automaton.sync_state_field]
@@ -186,11 +188,11 @@ class CrapoAutomatonMixin(models.AbstractModel):
         if automaton:
             # Sync crapo state with sync_state_field if needed
             if automaton.sync_state_field in values:
-                values[
-                    "crapo_state_id"
-                ] = self._crapo_get_sync_state(  # pylint: disable=protected-access
-                    values[automaton.sync_state_field]
-                ).id
+                values["crapo_state_id"] = (
+                    self._crapo_get_sync_state(  # pylint: disable=protected-access
+                        values[automaton.sync_state_field]
+                    ).id
+                )
 
             # Check if there is a change state needed
             if values.get("crapo_state_id"):

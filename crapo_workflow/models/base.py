@@ -2,6 +2,7 @@
 see README for details
 """
 
+import logging
 from odoo import models
 
 
@@ -30,6 +31,7 @@ class Base(models.AbstractModel):
         """
         Notify event to workflow broker
         """
+        logging.info("COUCOU")
         broker = self.env["crapo.workflow.broker"]
         for rec in self:
             if values is None:
