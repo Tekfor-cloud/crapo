@@ -1,8 +1,9 @@
 """
 see README for details
 """
-import re
 
+import re
+import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
@@ -93,6 +94,10 @@ class WorkflowTrigger(models.Model):
         parameter
         """
         self.ensure_one()
+        logging.info("IN RUN_ACTIVITY activity_id.name:%s", activity_id.name)
+        # logging.info(
+        #     "IN RUN_ACTIVITY activity_id.name:%s", activity_id.model_id.model
+        # )
 
         for rec in wf_context_id.context_event_ids.filtered(
             lambda rec: rec.trigger_id == self
