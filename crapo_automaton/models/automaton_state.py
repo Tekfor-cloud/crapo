@@ -95,7 +95,6 @@ class CrapoAutomatonState(models.Model):
         there a sync_state_field on automaton
         """
         rec = super(CrapoAutomatonState, self).create(values)
-        logging.info("IN CREATE OF automaton_state")
         automaton = rec.automaton_id
         model = self.env[automaton.model_id.model]
 

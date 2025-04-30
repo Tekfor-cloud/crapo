@@ -111,7 +111,6 @@ class CrapoAutomatonMixin(models.AbstractModel):
         )
         # If no crapo sate is link to sync_state_field value
         if not sync_state:
-            logging.info("IN _crapo_get_sync_state")
             sync_rec = self.env[
                 self.env[automaton.model_id.model]
                 ._fields[automaton.sync_state_field]
