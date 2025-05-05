@@ -2,7 +2,7 @@
 see README for details
 """
 
-import logging
+# import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import UserError
 
@@ -192,18 +192,11 @@ class WorkflowContextEvent(models.Model):
         """
         res = super(WorkflowContextEvent, self).write(values)
         if values.get("done"):
-            logging.info("IN WorkflowContextEvent :%s", self)
             for wf_context_id in self.mapped("wf_context_id"):
-                logging.info(
-                    "IN WorkflowContextEvent wf_context_id:%s", wf_context_id
-                )
                 filtered_rec = self.filtered(
                     lambda rec: rec.exists()
                     and rec.wf_context_id
                     == wf_context_id  # pylint: disable=cell-var-from-loop
-                )
-                logging.info(
-                    "IN WorkflowContextEvent filtered_rec:%s", filtered_rec
                 )
                 filtered_rec.mapped(
                     "trigger_id"

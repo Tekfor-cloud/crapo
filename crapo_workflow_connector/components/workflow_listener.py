@@ -4,7 +4,6 @@ See README for details
 
 from odoo.addons.component.core import Component
 from odoo.addons.component_event.components.event import skip_if
-import logging
 
 
 class WorkflowListener(Component):
@@ -21,7 +20,6 @@ class WorkflowListener(Component):
         """
         Send a workflow event
         """
-        logging.info("wf_event IN WorkflowListener")
         try:
             mdl_broker = self.env["crapo.workflow.broker"]
         except KeyError:

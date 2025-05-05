@@ -3,7 +3,8 @@ see README for details
 """
 
 import re
-import logging
+
+# import logging
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from odoo.tools.safe_eval import safe_eval
@@ -86,13 +87,7 @@ class WorkflowTrigger(models.Model):
                 # Run activities
                 else:
                     for activity_id in rec.to_activity_ids:
-                        logging.info(
-                            "nombre d'activité:%s", len(rec.to_activity_ids)
-                        )
-                        logging.info("activity_id.name:%s", activity_id.name)
                         rec.run_activity(activity_id, wf_context_id)
-
-        logging.info("END check_and_run")
 
     def run_activity(self, activity_id, wf_context_id):
         """
@@ -104,12 +99,9 @@ class WorkflowTrigger(models.Model):
         for rec in wf_context_id.context_event_ids.filtered(
             lambda rec: rec.trigger_id == self
         ):
-            logging.info("rec.id:%s", rec.id)
             rec.unlink()
 
         # wf_context_id.write({"context_event_ids": [(5, 0, 0)]})
-        logging.info(self)
-        logging.info(self.search([("from_activity_ids", "=", activity_id.id)]))
         for rec in self.search([("from_activity_ids", "=", activity_id.id)]):
             wf_context_id.write(
                 {
@@ -121,7 +113,6 @@ class WorkflowTrigger(models.Model):
             )
 
         activity_id.sudo().with_delay().run(wf_context_id, self)
-        logging.info("END run_activity")
 
     @api.onchange("from_activity_ids")
     def activity_ended_event_consistency(self):

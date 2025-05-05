@@ -2,7 +2,7 @@
 see README for details
 """
 
-import logging
+# import logging
 from odoo import models, fields, api
 
 
@@ -83,7 +83,6 @@ class WorkflowActivity(models.Model):
         Runs the server action, possibly in async and add some values
         to context
         """
-        logging.info("RUN IN WorkflowActivity")
         context = {
             "wf_context_id": wf_context_id,
             "wf_trigger_id": wf_trigger_id,
@@ -91,25 +90,18 @@ class WorkflowActivity(models.Model):
 
         res = False
         for rec in self:
-            logging.info("rec:%s", rec)
-            logging.info("rec.name:%s", rec.name)
             if rec.active_record_context_key:
-                logging.info(rec.active_record_context_key)
                 active_record = wf_context_id.get_context_entry(
                     rec.active_record_context_key
                 )
-                logging.info("active_record:%s", active_record)
                 context["active_id"] = active_record.id
                 context["active_model"] = (
                     active_record._name
                 )  # pylint: disable=protected-access
-            logging.info("BEFORE action_server_id.run")
             res = rec.with_context(**context).action_server_id.run()
-            logging.info("AFTER action_server_id.run")
             rec.wf_event(
                 "activity_ended", {"activity_wf_ctx_id": wf_context_id}
             )
-            logging.info("AFTER rec.wf_event")
 
         return res
 

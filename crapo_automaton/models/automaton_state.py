@@ -2,7 +2,6 @@
 See README for details
 """
 
-import logging
 from odoo import fields, models, _, api, exceptions
 
 

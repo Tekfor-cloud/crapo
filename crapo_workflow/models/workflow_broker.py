@@ -4,7 +4,8 @@ see README for details
 
 from odoo import models, api
 from odoo.tools.safe_eval import safe_eval
-import logging
+
+# import logging
 
 
 class WorkflowBroker(models.TransientModel):
@@ -47,7 +48,7 @@ class WorkflowBroker(models.TransientModel):
 
         # Get empty recordset to accumulate done wf_ctx_event
         done_ctx_event = self.env["crapo.workflow.context.event"]
-        logging.info("IN NOTIFY")
+
         # Looking for event concerned
         for rec_event in self.env["crapo.workflow.event"].search(domain):
 
@@ -91,6 +92,6 @@ class WorkflowBroker(models.TransientModel):
                         )
                     ):
                         done_ctx_event = done_ctx_event | rec_ctx_event
-        logging.info("done_ctx_event:%s", done_ctx_event)
+
         if done_ctx_event:
             done_ctx_event.write({"done": True})
