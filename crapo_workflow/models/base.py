@@ -2,7 +2,6 @@
 see README for details
 """
 
-# import logging
 from odoo import models
 
 
