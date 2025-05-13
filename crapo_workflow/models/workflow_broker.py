@@ -5,8 +5,6 @@ see README for details
 from odoo import models, api
 from odoo.tools.safe_eval import safe_eval
 
-# import logging
-
 
 class WorkflowBroker(models.TransientModel):
     """
