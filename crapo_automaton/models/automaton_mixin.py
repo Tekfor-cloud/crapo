@@ -186,11 +186,11 @@ class CrapoAutomatonMixin(models.AbstractModel):
         if automaton:
             # Sync crapo state with sync_state_field if needed
             if automaton.sync_state_field in values:
-                values[
-                    "crapo_state_id"
-                ] = self._crapo_get_sync_state(  # pylint: disable=protected-access
-                    values[automaton.sync_state_field]
-                ).id
+                values["crapo_state_id"] = (
+                    self._crapo_get_sync_state(  # pylint: disable=protected-access
+                        values[automaton.sync_state_field]
+                    ).id
+                )
 
             # Check if there is a change state needed
             if values.get("crapo_state_id"):

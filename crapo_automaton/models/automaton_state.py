@@ -1,6 +1,7 @@
 """
 See README for details
 """
+
 from odoo import fields, models, _, api, exceptions
 
 
