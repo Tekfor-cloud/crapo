@@ -49,7 +49,6 @@ class WorkflowBroker(models.TransientModel):
 
         # Looking for event concerned
         for rec_event in self.env["crapo.workflow.event"].search(domain):
-
             # If event belongs to an init trigger, and its condition
             # is met then create a new workflow context
             if rec_event.trigger_id.trigger_type == "init" and (
