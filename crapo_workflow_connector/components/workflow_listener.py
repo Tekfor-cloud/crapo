@@ -1,7 +1,6 @@
 """
 See README for details
 """
-
 from odoo.addons.component.core import Component
 from odoo.addons.component_event.components.event import skip_if
 

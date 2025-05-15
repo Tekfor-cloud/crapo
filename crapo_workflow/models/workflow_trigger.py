@@ -1,7 +1,6 @@
 """
 see README for details
 """
-
 import re
 
 from odoo import models, fields, api, _
@@ -110,7 +109,7 @@ class WorkflowTrigger(models.Model):
                 }
             )
 
-        activity_id.sudo().with_delay().run(wf_context_id, self)
+        activity_id.with_delay().run(wf_context_id, self)
 
     @api.onchange("from_activity_ids")
     def activity_ended_event_consistency(self):
