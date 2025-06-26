@@ -21,7 +21,12 @@ class Base(models.AbstractModel):
         )
         lst_default_context_keys = list(default_context_keys)
         for key in self.env.context.keys():
-            if key not in lst_default_context_keys:
+            if key not in lst_default_context_keys and key not in [
+                "uid",
+                "active_model",
+                "active_id",
+                "active_ids",
+            ]:
                 lst_default_context_keys.append(key)
         default_context_keys = tuple(lst_default_context_keys)
         return default_context_keys
