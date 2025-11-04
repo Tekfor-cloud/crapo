@@ -22,9 +22,7 @@ class CrapoAutomatonMixin(models.AbstractModel):
 
     _description = "Crapo automaton mixin"
 
-    _readonly_domain = (
-        "[('crapo_readonly_fields', 'like', ',{},'.format(field_name))]"
-    )
+    _readonly_expression = "',{},' in crapo_readonly_fields"
     _readonly_fields_to_add = ["crapo_readonly_fields"]
 
     crapo_automaton_id = fields.Many2one(
@@ -60,12 +58,10 @@ class CrapoAutomatonMixin(models.AbstractModel):
     )
 
     def _read_group_crapo_states(  # pylint: disable=unused-argument
-        self, states, domain, order
+        self, states, domain
     ):
-        state_ids = states._search(  # pylint: disable=protected-access
-            self._fields["crapo_state_id"].domain(self),
-            order=order,
-            access_rights_uid=SUPERUSER_ID,
+        state_ids = states.sudo()._search(  # pylint: disable=protected-access
+            self._fields["crapo_state_id"].domain(self), order=states._order
         )
         return states.browse(state_ids)
 
@@ -75,12 +71,7 @@ class CrapoAutomatonMixin(models.AbstractModel):
         crapo_readonly_fields before effective write
         """
         for rec in self:
-            if rec.crapo_state_id.readonly_fields:
-                rec.crapo_readonly_fields = ",{},".format(
-                    rec.crapo_state_id.readonly_fields
-                )
-            else:
-                rec.crapo_readonly_fields = ",0,"
+            rec.crapo_readonly_fields = rec.crapo_state_id.readonly_fields
 
     @api.model
     def _crapo_get_model_automaton(self):

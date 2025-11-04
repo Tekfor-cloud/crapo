@@ -2,12 +2,8 @@
 See README for details
 """
 
-from lxml import etree
 from lxml.builder import E  # pylint: disable=no-name-in-module
-
 from odoo import models
-from odoo.tools.safe_eval import safe_eval
-from odoo.osv import expression
 
 
 class ReadonlyViewMixin(models.AbstractModel):
@@ -18,7 +14,7 @@ class ReadonlyViewMixin(models.AbstractModel):
     _name = "crapo.readonly.view.mixin"
     _description = "Crapo Readonly View Mixin"
 
-    _readonly_domain = []
+    _readonly_expression = "False"
     _readonly_fields_to_add = []
 
     def _valid_field_parameter(self, field, name):
@@ -28,68 +24,39 @@ class ReadonlyViewMixin(models.AbstractModel):
             or super()._valid_field_parameter(field, name)
         )
 
-    # 17.0
-    # def _get_view(self, view_id=None, view_type="form", **options):
-    #     arch, view = super()._get_view(view_id, view_type, **options)
-    #     if view_type in ("form", "tree"):
-    #         skip_fields = [
-    #             name
-    #             for name, field in self._fields.items()
-    #             if (
-    #                 hasattr(field, "skip_readonly_domain")
-    #                 and field.skip_readonly_domain
-    #             )
-    #             or field.readonly
-    #         ]
+    def _get_view(self, view_id=None, view_type="form", **options):
+        arch, view = super()._get_view(view_id, view_type, **options)
+        if view_type in ("form", "list"):
+            skip_fields = [
+                name
+                for name, field in self._fields.items()
+                if (
+                    hasattr(field, "skip_readonly_domain")
+                    and field.skip_readonly_domain
+                )
+                or field.readonly
+            ]
 
-    #         for field in self._readonly_fields_to_add:
-    #             arch.append(E.field(name=field, invisible="1"))
+            for field in self._readonly_fields_to_add:
+                arch.append(E.field(name=field, invisible="1"))
 
-    #         if not isinstance(self._readonly_domain, (list, tuple)):
-    #             lst_domain = [self._readonly_domain]
-    #         else:
-    #             lst_domain = self._readonly_domain
+            self._process_field(arch, skip_fields)
+        return arch, view
 
-    #         self._process_field(arch, skip_fields, lst_domain)
-    #     return arch, view
+    def _process_field(self, node, skip_fields):
+        """
+        Add readnoly attrs if needed
+        """
 
-    # def _process_field(self, node, skip_fields, lst_domain):
-    #     """
-    #     Add readnoly attrs if needed
-    #     """
-    #     if node.get("readonly_global_domain"):
-    #         lst_domain = lst_domain + [node.get("readonly_global_domain")]
+        if node.tag == "field":
+            field_name = node.get("name")
 
-    #     if node.tag == "field":
-    #         field_name = node.get("name")
+            if field_name in skip_fields:
+                return
+            readonly = node.get("readonly") or "False"
+            readonly += " or " + self._readonly_expression.format(field_name)
+            node.set("readonly", str(readonly))
 
-    #         if field_name in skip_fields:
-    #             return
-
-    #         attrs = safe_eval(node.get("attrs", "{}"))
-    #         readonly = attrs.get("readonly") or node.get("readonly")
-    #         if isinstance(readonly, str):
-    #             readonly = safe_eval(node.get("readonly", "{}"))
-
-    #         # Deal with none domain value, if field is explicitly in
-    #         # readonly we skip
-    #         if not isinstance(readonly, (list, tuple)) and readonly:
-    #             return
-
-    #         _readonly_domain = expression.OR(
-    #             [
-    #                 safe_eval(
-    #                     domain, {"field_name": field_name, "ref": self.env.ref}
-    #                 )
-    #                 for domain in lst_domain
-    #             ]
-    #         )
-    #         if readonly:
-    #             _readonly_domain = expression.OR([readonly, _readonly_domain])
-
-    #         attrs["readonly"] = _readonly_domain
-    #         node.set("attrs", str(attrs))
-
-    #     else:
-    #         for child_node in node:
-    #             self._process_field(child_node, skip_fields, lst_domain)
+        else:
+            for child_node in node:
+                self._process_field(child_node, skip_fields)
