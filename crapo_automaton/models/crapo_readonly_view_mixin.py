@@ -38,7 +38,13 @@ class ReadonlyViewMixin(models.AbstractModel):
             ]
 
             for field in self._readonly_fields_to_add:
-                arch.append(E.field(name=field, invisible="1"))
+                arch.append(
+                    E.field(
+                        name=field,
+                        invisible="True",
+                        column_invisible="True",
+                    )
+                )
 
             self._process_field(arch, skip_fields)
         return arch, view
