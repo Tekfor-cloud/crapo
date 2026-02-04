@@ -55,14 +55,14 @@ class WorkflowEvent(models.Model):
     # Write / Create
     # ================================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Automaticaly add a default name if not defined
         """
-        rec = super(WorkflowEvent, self).create(values)
+        recs = super(WorkflowEvent, self).create(vals_list)
+        for rec in recs:
+            if not rec.name:
+                rec.name = "_".join((rec.event_type, str(rec.id)))
 
-        if not rec.name:
-            rec.name = "_".join((rec.event_type, str(rec.id)))
-
-        return rec
+        return recs

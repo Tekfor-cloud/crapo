@@ -108,10 +108,11 @@ class WorkflowActivity(models.Model):
     # Write/Create
     # ==============================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Override default create to setup usage
         """
-        values["usage"] = "crapo_workflow_activity"
-        return super(WorkflowActivity, self).create(values)
+        for values in vals_list:
+            values["usage"] = "crapo_workflow_activity"
+        return super(WorkflowActivity, self).create(vals_list)

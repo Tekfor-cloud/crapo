@@ -122,46 +122,48 @@ class CrapoAutomatonMixin(models.AbstractModel):
     # =================
     # Write / Create
     # =================
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Override the default create method
         """
-        rec = super(CrapoAutomatonMixin, self).create(values)
+        recs = super(CrapoAutomatonMixin, self).create(vals_list)
+        for rec in recs:
+            automaton = rec.crapo_automaton_id
+            if automaton:
+                # Sync crapo state with sync_state_field if needed
+                if automaton.sync_state_field:
+                    rec.with_context(
+                        {"crapo_no_transition": True}
+                    ).crapo_state_id = rec._crapo_get_sync_state(  # pylint: disable=protected-access
+                        rec[automaton.sync_state_field].id
+                    ).id
 
-        automaton = rec.crapo_automaton_id
-        if automaton:
-            # Sync crapo state with sync_state_field if needed
-            if automaton.sync_state_field:
-                rec.with_context(
-                    {"crapo_no_transition": True}
-                ).crapo_state_id = rec._crapo_get_sync_state(  # pylint: disable=protected-access
-                    rec[automaton.sync_state_field].id
-                ).id
-
-            state_id = rec.crapo_state_id
-            # Case where no crapo state value is define
-            if not state_id:
-                raise ValidationError(
-                    _(
-                        "{} is required. HINT: Define a default crapo state"
-                    ).format(self._fields["crapo_state_id"].string)
-                )
-
-            # Check if defined crapo state is a possible create value
-            if not self.env.context.get(
-                "crapo_no_creation_state_validation"
-            ) and not (state_id.is_start_state or state_id.is_creation_state):
-                raise ValidationError(
-                    _(
-                        ' "{}" is not a possible crapo state '
-                        ' to create a record of "{}" '
-                    ).format(
-                        state_id.display_name,
-                        rec._name,  # pylint: disable=protected-access
+                state_id = rec.crapo_state_id
+                # Case where no crapo state value is define
+                if not state_id:
+                    raise ValidationError(
+                        _(
+                            "{} is required. HINT: Define a default crapo state"
+                        ).format(self._fields["crapo_state_id"].string)
                     )
-                )
-        return rec
+
+                # Check if defined crapo state is a possible create value
+                if not self.env.context.get(
+                    "crapo_no_creation_state_validation"
+                ) and not (
+                    state_id.is_start_state or state_id.is_creation_state
+                ):
+                    raise ValidationError(
+                        _(
+                            ' "{}" is not a possible crapo state '
+                            ' to create a record of "{}" '
+                        ).format(
+                            state_id.display_name,
+                            rec._name,  # pylint: disable=protected-access
+                        )
+                    )
+        return recs
 
     def write(self, values):
         """

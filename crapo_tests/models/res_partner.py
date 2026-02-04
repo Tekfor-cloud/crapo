@@ -1,6 +1,7 @@
 """
 See README for details
 """
+
 from odoo import models, api
 
 
@@ -13,14 +14,15 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "crapo.automaton.mixin"]
     _name = "res.partner"
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Emit wf_event on create
         """
-        rec = super(ResPartner, self).create(values)
-        rec.wf_event("record_create")
-        return rec
+        recs = super(ResPartner, self).create(vals_list)
+        for rec in recs:
+            rec.wf_event("record_create")
+        return recs
 
     def write(self, values):
         """

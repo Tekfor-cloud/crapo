@@ -84,14 +84,15 @@ change or during the write process (computed fields) """,
         default=False,
     )
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Override to prevent save postcondtions on async_action
         """
-        if values.get("async_action"):
-            values["postcondition_ids"] = False
-        return super(CrapoAutomatonTransition, self).create(values)
+        for values in vals_list:
+            if values.get("async_action"):
+                values["postcondition_ids"] = False
+        return super(CrapoAutomatonTransition, self).create(vals_list)
 
     def write(self, values):
         """

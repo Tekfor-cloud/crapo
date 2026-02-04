@@ -195,18 +195,19 @@ class WorkflowTrigger(models.Model):
     # Write / Create
     # ==========================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Override default creation method
         """
-        rec = super(WorkflowTrigger, self).create(values)
-        if values.get("event_logical_condition"):
-            rec.check_event_logical_condition()
+        recs = super(WorkflowTrigger, self).create(vals_list)
+        for rec, values in zip(recs, vals_list):
+            if values.get("event_logical_condition"):
+                rec.check_event_logical_condition()
 
-        rec.check_init_trigger()
+            rec.check_init_trigger()
 
-        return rec
+        return recs
 
     def write(self, values):
         """

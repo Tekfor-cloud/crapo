@@ -1,6 +1,7 @@
 """
 See README for details
 """
+
 from odoo import models, api, fields
 
 
@@ -48,10 +49,11 @@ class CrapoAutomatonAction(models.Model):
     # Write/Create
     # ==============================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Override default creation : fixes value for 'usage'
         """
-        values["usage"] = "crapo_automaton_action"
-        return super(CrapoAutomatonAction, self).create(values)
+        for values in vals_list:
+            values["usage"] = "crapo_automaton_action"
+        return super(CrapoAutomatonAction, self).create(vals_list)

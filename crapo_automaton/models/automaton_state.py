@@ -87,26 +87,26 @@ class CrapoAutomatonState(models.Model):
     # Write / Create
     # ====================================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Write crapo_state_id on automaton.model_id existing records if
         there a sync_state_field on automaton
         """
-        rec = super(CrapoAutomatonState, self).create(values)
+        recs = super(CrapoAutomatonState, self).create(vals_list)
+        for rec in self:
+            automaton = rec.automaton_id
+            model = self.env[automaton.model_id.model]
 
-        automaton = rec.automaton_id
-        model = self.env[automaton.model_id.model]
+            # Synchronize existing automaton.model_id records
+            if automaton.sync_state_field:
+                model.search(
+                    [(automaton.sync_state_field, "=", rec.sync_state_id)]
+                ).with_context({"crapo_no_transition": True}).write(
+                    {"crapo_state_id": rec.id}
+                )
 
-        # Synchronize existing automaton.model_id records
-        if automaton.sync_state_field:
-            model.search(
-                [(automaton.sync_state_field, "=", rec.sync_state_id)]
-            ).with_context({"crapo_no_transition": True}).write(
-                {"crapo_state_id": rec.id}
-            )
-
-        return rec
+        return recs
 
     def write(self, values):
         """

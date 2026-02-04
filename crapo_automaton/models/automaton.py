@@ -69,15 +69,15 @@ class Automaton(models.Model):
     # Create
     # =========================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Write automaton_id on automaton.model_id existing records
         """
-        rec = super(Automaton, self).create(values)
+        recs = super(Automaton, self).create(vals_list)
+        for rec in recs:
+            self.env[rec.model_id.model].search([]).write(
+                {"crapo_automaton_id": rec.id}
+            )
 
-        self.env[rec.model_id.model].search([]).write(
-            {"crapo_automaton_id": rec.id}
-        )
-
-        return rec
+        return recs

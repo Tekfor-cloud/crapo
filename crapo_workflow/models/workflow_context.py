@@ -172,18 +172,18 @@ class WorkflowContextEvent(models.Model):
     # Write / Create
     # ==================
 
-    @api.model
-    def create(self, values):
+    @api.model_create_multi
+    def create(self, vals_list):
         """
         Override default create to set record_id on event creation
         """
-        rec = super(WorkflowContextEvent, self).create(values)
-
-        if rec.event_id.record_id_context_key:
-            rec.get_record_id()
-        elif rec.event_id.event_type == "activity_ended":
-            rec.record_id = rec.event_id.activity_id.id
-        return rec
+        recs = super(WorkflowContextEvent, self).create(vals_list)
+        for rec in recs:
+            if rec.event_id.record_id_context_key:
+                rec.get_record_id()
+            elif rec.event_id.event_type == "activity_ended":
+                rec.record_id = rec.event_id.activity_id.id
+        return recs
 
     def write(self, values):
         """
